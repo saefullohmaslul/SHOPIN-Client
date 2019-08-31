@@ -11,7 +11,7 @@ import {
   changeStatus,
   postTransaction
 } from "../../redux/actions/transactions";
-import { redColor, textColor } from "../../api/constant";
+import { redColor, textColor, primaryColor } from "../../api/constant";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -159,6 +159,7 @@ class transactionList extends Component {
                 title="Checkout"
                 style={{ borderRadius: 30 }}
                 onPress={() => this.handleCheckout()}
+                buttonStyle={{ backgroundColor: primaryColor }}
               />
             </View>
           </View>

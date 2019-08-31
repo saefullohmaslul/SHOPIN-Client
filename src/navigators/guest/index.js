@@ -1,13 +1,16 @@
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { createBottomTabNavigator } from "react-navigation";
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator
+} from "react-navigation";
 
 import { primaryColor } from "../../api/constant";
 import HomeNavigator from "./HomeNavigator";
 import orderList from "../../components/order/orderList";
 import transactionList from "../../components/transaction/transactionList";
 
-const GuestNavigators = createBottomTabNavigator(
+const GuestNavigators = createMaterialTopTabNavigator(
   {
     Home: {
       screen: HomeNavigator,

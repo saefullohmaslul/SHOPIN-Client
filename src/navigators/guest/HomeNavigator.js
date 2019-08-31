@@ -18,13 +18,34 @@ const HomeNavigator = createStackNavigator(
       }
     },
     Order: {
-      screen: orderList
+      screen: orderList,
+      navigationOptions: {
+        headerStyle: {
+          elevation: 0,
+          borderBottomColor: "transparent"
+        },
+        title: "ORDER"
+      }
     },
     Transaction: {
-      screen: transactionList
+      screen: transactionList,
+      navigationOptions: {
+        headerStyle: {
+          elevation: 0,
+          borderBottomColor: "transparent"
+        },
+        title: "VIEW BILL"
+      }
     },
     Caseer: {
-      screen: transactionCaseer
+      screen: transactionCaseer,
+      navigationOptions: {
+        headerStyle: {
+          elevation: 0,
+          borderBottomColor: "transparent"
+        },
+        title: "GOTO CASEER"
+      }
     }
   },
   {

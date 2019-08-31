@@ -14,9 +14,6 @@ const AppNavigators = createSwitchNavigator({
   Guest: {
     screen: HomeNavigator
   }
-  // Logged: {
-  //   screen:
-  // }
 });
 
 export default createAppContainer(AppNavigators);
