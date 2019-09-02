@@ -27,10 +27,13 @@ class transactionList extends Component {
     timer: setInterval(() => {
       this.props.dispatch(timeUpdate());
     }, 1000),
-    transactions: undefined
+    transactions: undefined,
+    tableNumber: undefined
   };
   async componentDidMount() {
     const transactionId = await AsyncStorage.getItem("@transactionId");
+    const tableNumber = await AsyncStorage.getItem("@tableNumber");
+    this.setState({ tableNumber });
     await this.props.dispatch(getTransaction(transactionId));
     const data = {
       status: true
@@ -147,7 +150,9 @@ class transactionList extends Component {
                 {time.menit < 10 ? `0${time.menit}` : time.menit}:
                 {time.detik < 10 ? `0${time.detik}` : time.detik}
               </Text>
-              <Text style={styles.ordersTableNumber}>No. Meja: 21</Text>
+              <Text style={styles.ordersTableNumber}>
+                No. Meja: {this.state.tableNumber}
+              </Text>
             </View>
             <View style={styles.orderListContainer}>
               <View style={styles.orderRowContainer}>
@@ -184,7 +189,7 @@ class transactionList extends Component {
               </View>
               <View style={styles.orderRowContainer}>
                 <Text style={styles.orderTitle}>Total</Text>
-                <Text>
+                <Text style={{ fontWeight: "bold", fontSize: 17 }}>
                   {transactions.data.totalPrice
                     ? convertIDR(transactions.data.totalPrice)
                     : 0}
@@ -222,16 +227,16 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   waiting: { color: redColor },
   sent: { color: "#27ae60" },
+  ordersContainer: { position: "absolute", bottom: 0, flex: 1, width: width },
   ordersHeader: {
-    backgroundColor: primaryColor,
+    backgroundColor: "#e2e8ea",
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: "row",
     alignItems: "center"
   },
-  ordersContainer: { position: "absolute", bottom: 0, flex: 1, width: width },
-  ordersTime: { paddingRight: 15, color: "#fff", flex: 1 },
-  ordersTableNumber: { color: "#fff", alignSelf: "flex-end" },
+  ordersTime: { paddingRight: 15, color: "#7f8c8d", flex: 1 },
+  ordersTableNumber: { color: "#7f8c8d", alignSelf: "flex-end" },
   orderListContainer: { padding: 10, backgroundColor: "#fff" },
   orderRowContainer: { flexDirection: "row" },
   orderTitle: { marginBottom: 10, flex: 1 },

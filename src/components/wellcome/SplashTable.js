@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, StatusBar } from "react-native";
+import { Text, View, StyleSheet, StatusBar, Image } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { primaryColor, textColor } from "../../api/constant";
@@ -24,15 +24,27 @@ export default class SplashTable extends Component {
   };
 
   render() {
-    console.log(this.state.tableNumber);
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={primaryColor} barStyle={"light-content"} />
         <View style={styles.iconContainer}>
-          <Icons name={"md-rocket"} size={130} style={styles.icon} />
-          <Text style={styles.brand}>Masukkan nomor meja</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Image
+              source={require("../../assets/table-number.png")}
+              style={{
+                height: 200,
+                width: 200,
+                marginBottom: 15
+              }}
+            />
+          </View>
           <Input
-            placeholder={"Nomor meja"}
+            placeholder={"Masukkan nomor meja"}
             inputStyle={{
               height: 10,
               fontSize: 14,
@@ -50,7 +62,7 @@ export default class SplashTable extends Component {
             onChangeText={text => this.setState({ tableNumber: text })}
           />
           <Button
-            title={"Submit"}
+            title={"SUBMIT"}
             buttonStyle={{ backgroundColor: primaryColor }}
             containerStyle={{ marginHorizontal: 10 }}
             onPress={() => this.postTransaction(this.state.tableNumber)}
@@ -70,15 +82,5 @@ const styles = StyleSheet.create({
   iconContainer: {
     flex: 1,
     justifyContent: "center"
-  },
-  icon: {
-    color: primaryColor,
-    alignSelf: "center"
-  },
-  brand: {
-    color: "#fff",
-    fontSize: 20,
-    textTransform: "uppercase",
-    letterSpacing: 3
   }
 });

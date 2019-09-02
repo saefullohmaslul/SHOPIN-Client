@@ -19,7 +19,7 @@ class transactionCaseer extends Component {
   }
 
   goHome = () => {
-    this.props.navigation.replace("HomeIndex");
+    this.props.navigation.navigate("SplashTable");
     this.props.resetTimer();
   };
 
@@ -48,7 +48,7 @@ class transactionCaseer extends Component {
           </Text>
         </View>
         <Button
-          title={"Goto Home"}
+          title={"Back to Homepage"}
           onPress={this.goHome}
           buttonStyle={{ backgroundColor: primaryColor }}
           containerStyle={{ marginHorizontal: 20, marginTop: 20 }}

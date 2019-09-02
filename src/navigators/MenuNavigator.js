@@ -34,7 +34,7 @@ const MenuNavigator = createMaterialTopTabNavigator(
       },
       showIcon: true,
       indicatorStyle: {
-        backgroundColor: "#fff"
+        backgroundColor: "#e2e8ea"
       },
       labelStyle: {
         fontSize: 10

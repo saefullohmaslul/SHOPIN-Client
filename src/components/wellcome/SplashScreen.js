@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, StatusBar } from "react-native";
 import { primaryColor } from "../../api/constant";
-import Icons from "react-native-vector-icons/Ionicons";
+import Icons from "react-native-vector-icons/FontAwesome5";
 
 export default class SplashScreen extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.props.navigation.navigate("SplashTable");
-    }, 500);
+    }, 1000);
   }
 
   render() {
@@ -15,7 +15,7 @@ export default class SplashScreen extends Component {
       <View style={styles.container}>
         <StatusBar backgroundColor={primaryColor} barStyle={"light-content"} />
         <View style={styles.iconContainer}>
-          <Icons name={"md-rocket"} size={130} style={styles.icon} />
+          <Icons name={"shopware"} size={130} style={styles.icon} />
           <Text style={styles.brand}>ShopIn</Text>
         </View>
       </View>
@@ -38,8 +38,10 @@ const styles = StyleSheet.create({
   },
   brand: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 22,
     textTransform: "uppercase",
-    letterSpacing: 3
+    letterSpacing: 3,
+    marginTop: 20,
+    fontWeight: "bold"
   }
 });

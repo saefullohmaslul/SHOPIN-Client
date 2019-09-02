@@ -6,7 +6,8 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from "react-native";
 import { Text, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -46,6 +47,22 @@ class Drink extends Component {
       orders.data[findMenu].qty += 1;
       this.props.dispatch(changeQty(orders.data));
     }
+  };
+
+  handleConfirmOrder = () => {
+    Alert.alert(
+      "Confirm Order",
+      "Are you sure to order this?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => this.handleOrder() }
+      ],
+      { cancelable: false }
+    );
   };
 
   handleOrder = async () => {
@@ -174,8 +191,10 @@ class Drink extends Component {
               containerStyle={styles.buttonContainer}
               style={styles.button}
               buttonStyle={{ backgroundColor: primaryColor, borderRadius: 0 }}
-              onPress={this.handleOrder}
+              onPress={this.handleConfirmOrder}
               disabled={this.state.orders.length !== 0 ? false : true}
+              disabledStyle={{ backgroundColor: "#e2e8ea" }}
+              disabledTitleStyle={{ color: "#7f8c8d" }}
             />
           </View>
         </View>
@@ -198,17 +217,25 @@ const styles = StyleSheet.create({
   container: { paddingHorizontal: 5 },
   ordersContainer: { position: "absolute", bottom: 0, backgroundColor: "#fff" },
   ordersHeader: {
-    backgroundColor: primaryColor,
+    backgroundColor: "#e2e8ea",
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: "row",
     alignItems: "center"
   },
-  ordersTime: { paddingRight: 15, color: "#fff", flex: 1 },
-  ordersTableNumber: { color: "#fff", alignSelf: "flex-end" },
+  ordersTime: { paddingRight: 15, color: "#7f8c8d", flex: 1 },
+  ordersTableNumber: { color: "#7f8c8d", alignSelf: "flex-end" },
   ordersMenu: { marginHorizontal: 5 },
   ordersMenuImage: { width: 80, height: 80, borderRadius: 50 },
-  ordersMenuQty: { position: "absolute", right: 0, bottom: 0 },
+  ordersMenuQty: {
+    position: "absolute",
+    right: 5,
+    bottom: 5,
+    backgroundColor: "#e74c3c",
+    paddingHorizontal: 5,
+    borderRadius: 10,
+    color: "#fff"
+  },
   ordersNull: { padding: 45 },
   ordersButtonContainer: {
     flex: 1,
