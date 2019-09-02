@@ -1,8 +1,7 @@
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import SplashScreen from "../components/wellcome/SplashScreen";
-import GuestNavigators from "./guest";
 import SplashTable from "../components/wellcome/SplashTable";
-import HomeNavigator from "./guest/HomeNavigator";
+import HomeNavigator from "./HomeNavigator";
 
 const AppNavigators = createSwitchNavigator({
   SplashScreen: {
@@ -11,7 +10,7 @@ const AppNavigators = createSwitchNavigator({
   SplashTable: {
     screen: SplashTable
   },
-  Guest: {
+  Home: {
     screen: HomeNavigator
   }
 });

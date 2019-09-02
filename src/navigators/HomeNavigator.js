@@ -1,20 +1,17 @@
 import { createStackNavigator } from "react-navigation";
-import HomeScreen from "../../components/home/HomeScreen";
-import { primaryColor } from "../../api/constant";
-import orderList from "../../components/order/orderList";
-import transactionList from "../../components/transaction/transactionList";
-import transactionCaseer from "../../components/transaction/transactionCaseer";
+import HomeScreen from "../components/home/HomeScreen";
+import { primaryColor } from "../api/constant";
+import orderList from "../components/order/orderList";
+import transactionList from "../components/transaction/transactionList";
+import transactionCaseer from "../components/transaction/transactionCaseer";
+import MenuNavigator from "./MenuNavigator";
 
 const HomeNavigator = createStackNavigator(
   {
     HomeIndex: {
-      screen: HomeScreen,
+      screen: MenuNavigator,
       navigationOptions: {
-        headerStyle: {
-          elevation: 0,
-          borderBottomColor: "transparent"
-        },
-        title: "SHOPIN"
+        header: null
       }
     },
     Order: {

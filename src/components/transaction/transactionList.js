@@ -44,7 +44,7 @@ class transactionList extends Component {
         serviceCharge: this.props.transactions.data.serviceCharge,
         tax: this.props.transactions.data.tax,
         totalPrice: this.props.transactions.data.totalPrice,
-        finishedTime: Date.now(),
+        finishedTime: `${this.props.time.jam}:${this.props.time.menit}:${this.props.time.detik}`,
         isPaid: false
       };
       const transactionId = await AsyncStorage.getItem("@transactionId");
@@ -148,18 +148,25 @@ class transactionList extends Component {
                 position: "absolute",
                 bottom: 0,
                 paddingVertical: 2.5,
-                paddingHorizontal: 5,
                 borderTopWidth: 1,
                 flex: 1,
-                width: width,
-                borderColor: "#ecf0f1"
+                width: width - 10,
+                borderColor: "#ecf0f1",
+                backgroundColor: "#ecf0f1",
+                flexDirection: "row",
+                alignItems: "center"
               }}
             >
+              <Text style={{ paddingHorizontal: 20 }}>
+                {this.props.time.jam}:{this.props.time.menit}:
+                {this.props.time.detik}
+              </Text>
               <Button
-                title="Checkout"
+                title="Order"
+                containerStyle={{ flex: 1 }}
                 style={{ borderRadius: 30 }}
-                onPress={() => this.handleCheckout()}
                 buttonStyle={{ backgroundColor: primaryColor }}
+                onPress={() => this.handleCheckout()}
               />
             </View>
           </View>
@@ -173,7 +180,8 @@ class transactionList extends Component {
 
 const mapStateToProps = state => {
   return {
-    transactions: state.transactions
+    transactions: state.transactions,
+    time: state.time
   };
 };
 

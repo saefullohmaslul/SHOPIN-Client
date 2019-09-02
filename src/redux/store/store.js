@@ -5,11 +5,13 @@ import logger from "redux-logger";
 import orders from "../reducers/orders";
 import menus from "../reducers/menus";
 import transactions from "../reducers/transactions";
+import time from "../reducers/time";
 
 const reducers = combineReducers({
   orders: orders,
   menus: menus,
-  transactions
+  transactions,
+  time
 });
 
 const store = createStore(reducers, applyMiddleware(promise, logger));

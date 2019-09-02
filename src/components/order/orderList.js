@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { Card, Button, Text, Image } from "react-native-elements";
 import { connect } from "react-redux";
 
@@ -8,6 +8,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { changeQty, postOrder } from "../../redux/actions/orders";
 import { convertIDR } from "../../utils/helper";
 import AsyncStorage from "@react-native-community/async-storage";
+
+const { width } = Dimensions.get("screen");
 
 class orderList extends Component {
   state = {
@@ -118,11 +120,32 @@ class orderList extends Component {
           })}
         </ScrollView>
         <View>
-          <Button
-            title={"Order"}
-            onPress={this.handleOrder}
-            buttonStyle={{ backgroundColor: primaryColor }}
-          />
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              paddingVertical: 2.5,
+              borderTopWidth: 1,
+              flex: 1,
+              width: width - 10,
+              borderColor: "#ecf0f1",
+              backgroundColor: "#ecf0f1",
+              flexDirection: "row",
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ paddingHorizontal: 20 }}>
+              {this.props.time.jam}:{this.props.time.menit}:
+              {this.props.time.detik}
+            </Text>
+            <Button
+              title="Order"
+              containerStyle={{ flex: 1 }}
+              style={{ borderRadius: 30 }}
+              buttonStyle={{ backgroundColor: primaryColor }}
+              onPress={this.handleOrder}
+            />
+          </View>
         </View>
       </View>
     ) : null;
@@ -132,7 +155,8 @@ class orderList extends Component {
 const mapStateToProps = state => {
   return {
     orders: state.orders,
-    menus: state.menus
+    menus: state.menus,
+    time: state.time
   };
 };
 

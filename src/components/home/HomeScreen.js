@@ -7,6 +7,7 @@ import ProductCard from "../products/ProductCard";
 import { primaryColor } from "../../api/constant";
 import { orderAdd } from "../../redux/actions/orders";
 import { menusGet } from "../../redux/actions/menus";
+import { timeUpdate } from "../../redux/actions/time";
 
 const { width } = Dimensions.get("screen");
 
@@ -35,10 +36,13 @@ class Home extends Component {
     this.setState({
       menus: this.props.menus.data
     });
+    setInterval(() => {
+      this.props.dispatch(timeUpdate(1));
+    }, 1000);
   }
 
   render() {
-    console.log(this.props.orders);
+    console.log(this.props.time);
     return (
       <View style={{ paddingHorizontal: 5 }}>
         <StatusBar backgroundColor={primaryColor} />
@@ -68,11 +72,18 @@ class Home extends Component {
               flex: 1,
               width: width - 10,
               borderColor: "#ecf0f1",
-              backgroundColor: "#ecf0f1"
+              backgroundColor: "#ecf0f1",
+              flexDirection: "row",
+              alignItems: "center"
             }}
           >
+            <Text style={{ paddingHorizontal: 20 }}>
+              {this.props.time.jam}:{this.props.time.menit}:
+              {this.props.time.detik}
+            </Text>
             <Button
               title="Order"
+              containerStyle={{ flex: 1 }}
               style={{ borderRadius: 30 }}
               buttonStyle={{ backgroundColor: primaryColor }}
               onPress={() => this.props.navigation.replace("Order")}
@@ -87,7 +98,8 @@ class Home extends Component {
 const mapStateToProps = state => {
   return {
     orders: state.orders,
-    menus: state.menus
+    menus: state.menus,
+    time: state.time
   };
 };
 

@@ -14,11 +14,10 @@ export default class SplashTable extends Component {
   postTransaction = async tableNumber => {
     const response = await postTableNumber(tableNumber);
     const data = response.data;
-    console.log(data);
     try {
       await AsyncStorage.setItem("@transactionId", data._id.toString());
       await AsyncStorage.setItem("@tableNumber", data.tableNumber.toString());
-      this.props.navigation.navigate("Guest");
+      this.props.navigation.navigate("Home");
     } catch (err) {
       console.log(err);
     }
