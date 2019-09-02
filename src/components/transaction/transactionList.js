@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Dimensions,
-  FlatList
-} from "react-native";
+import { View, StyleSheet, Dimensions, FlatList } from "react-native";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Card, Image, Text, Button } from "react-native-elements";
@@ -49,7 +43,9 @@ class transactionList extends Component {
     try {
       this.props.transactions.data.orders.map(order => {
         if (!order.status) {
-          throw err;
+          const error = new Error("Waiting");
+          error.data = "Mohon menunggu sejenak, pesanan sedang disiapkan ^-^";
+          throw error;
         }
       });
       const data = {
@@ -74,12 +70,10 @@ class transactionList extends Component {
         isPaid: false
       };
       const transactionId = await AsyncStorage.getItem("@transactionId");
-      const response = await this.props.dispatch(
-        postTransaction(data, transactionId)
-      );
+      await this.props.dispatch(postTransaction(data, transactionId));
       this.props.navigation.replace("Caseer");
     } catch (err) {
-      alert("tunggu waiting list");
+      alert(err.data);
     }
   };
 
@@ -92,10 +86,10 @@ class transactionList extends Component {
   }
 
   render() {
-    const time = this.props.time;
-    if (this.props.transactions.data) {
+    const { time, transactions } = this.props;
+    if (transactions.data) {
       return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={this.state.transactions.orders}
@@ -136,15 +130,7 @@ class transactionList extends Component {
               </Card>
             )}
           />
-
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              flex: 1,
-              width: width
-            }}
-          >
+          <View style={styles.ordersContainer}>
             <View style={styles.ordersHeader}>
               <Text style={styles.ordersTime}>
                 {time.jam < 10 ? `0${time.jam}` : time.jam}:
@@ -153,62 +139,55 @@ class transactionList extends Component {
               </Text>
               <Text style={styles.ordersTableNumber}>No. Meja: 21</Text>
             </View>
-            <View style={{ padding: 10, backgroundColor: "#fff" }}>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ marginBottom: 10, flex: 1 }}>Sub Total </Text>
+            <View style={styles.orderListContainer}>
+              <View style={styles.orderRowContainer}>
+                <Text style={styles.orderTitle}>Sub Total </Text>
                 <Text>
-                  {this.props.transactions.data.subTotal
-                    ? convertIDR(this.props.transactions.data.subTotal)
+                  {transactions.data.subTotal
+                    ? convertIDR(transactions.data.subTotal)
                     : 0}
                 </Text>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ marginBottom: 10, flex: 1 }}>Discount</Text>
+              <View style={styles.orderRowContainer}>
+                <Text style={styles.orderTitle}>Discount</Text>
                 <Text>
-                  {this.props.transactions.data.discount
-                    ? convertIDR(this.props.transactions.data.discount)
+                  {transactions.data.discount
+                    ? convertIDR(transactions.data.discount)
                     : 0}
                 </Text>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ marginBottom: 10, flex: 1 }}>
-                  Service Charge
-                </Text>
+              <View style={styles.orderRowContainer}>
+                <Text style={styles.orderTitle}>Service Charge</Text>
                 <Text>
-                  {this.props.transactions.data.serviceCharge
-                    ? convertIDR(this.props.transactions.data.serviceCharge)
+                  {transactions.data.serviceCharge
+                    ? convertIDR(transactions.data.serviceCharge)
                     : 0}
                 </Text>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ marginBottom: 10, flex: 1 }}>Tax</Text>
+              <View style={styles.orderRowContainer}>
+                <Text style={styles.orderTitle}>Tax</Text>
                 <Text>
-                  {this.props.transactions.data.tax
-                    ? convertIDR(this.props.transactions.data.tax)
+                  {transactions.data.tax
+                    ? convertIDR(transactions.data.tax)
                     : 0}
                 </Text>
               </View>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ marginBottom: 10, flex: 1 }}>Total</Text>
+              <View style={styles.orderRowContainer}>
+                <Text style={styles.orderTitle}>Total</Text>
                 <Text>
-                  {this.props.transactions.data.totalPrice
-                    ? convertIDR(this.props.transactions.data.totalPrice)
+                  {transactions.data.totalPrice
+                    ? convertIDR(transactions.data.totalPrice)
                     : 0}
                 </Text>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center"
-              }}
-            >
+            <View style={styles.buttonContainer}>
               <Button
                 title="CALL BILL"
                 containerStyle={{ flex: 1 }}
                 style={{ borderRadius: 30 }}
                 buttonStyle={{ backgroundColor: primaryColor, borderRadius: 0 }}
-                onPress={() => this.handleCheckout()}
+                onPress={this.handleCheckout}
               />
             </View>
           </View>
@@ -230,12 +209,9 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(transactionList);
 
 const styles = StyleSheet.create({
-  waiting: {
-    color: redColor
-  },
-  sent: {
-    color: "#27ae60"
-  },
+  container: { flex: 1 },
+  waiting: { color: redColor },
+  sent: { color: "#27ae60" },
   ordersHeader: {
     backgroundColor: primaryColor,
     paddingHorizontal: 10,
@@ -243,6 +219,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
+  ordersContainer: { position: "absolute", bottom: 0, flex: 1, width: width },
   ordersTime: { paddingRight: 15, color: "#fff", flex: 1 },
-  ordersTableNumber: { color: "#fff", alignSelf: "flex-end" }
+  ordersTableNumber: { color: "#fff", alignSelf: "flex-end" },
+  orderListContainer: { padding: 10, backgroundColor: "#fff" },
+  orderRowContainer: { flexDirection: "row" },
+  orderTitle: { marginBottom: 10, flex: 1 },
+  buttonContainer: { flexDirection: "row", alignItems: "center" }
 });
