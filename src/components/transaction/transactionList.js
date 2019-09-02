@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Dimensions, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  StatusBar
+} from "react-native";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Card, Image, Text, Button } from "react-native-elements";
@@ -90,6 +96,10 @@ class transactionList extends Component {
     if (transactions.data) {
       return (
         <View style={styles.container}>
+          <StatusBar
+            backgroundColor={primaryColor}
+            barStyle={"light-content"}
+          />
           <FlatList
             showsVerticalScrollIndicator={false}
             data={this.state.transactions.orders}

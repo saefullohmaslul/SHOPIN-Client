@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Button, Text } from "react-native-elements";
 import { primaryColor, redColor } from "../../api/constant";
@@ -26,6 +26,7 @@ class transactionCaseer extends Component {
   render() {
     return (
       <View style={{ justifyContent: "center", flex: 1 }}>
+        <StatusBar backgroundColor={primaryColor} barStyle={"light-content"} />
         <View style={{ alignItems: "center" }}>
           <Text
             h1
