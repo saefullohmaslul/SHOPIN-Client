@@ -1,7 +1,5 @@
 import { createStackNavigator } from "react-navigation";
-import HomeScreen from "../components/home/HomeScreen";
 import { primaryColor } from "../api/constant";
-import orderList from "../components/order/orderList";
 import transactionList from "../components/transaction/transactionList";
 import transactionCaseer from "../components/transaction/transactionCaseer";
 import MenuNavigator from "./MenuNavigator";
@@ -12,16 +10,6 @@ const HomeNavigator = createStackNavigator(
       screen: MenuNavigator,
       navigationOptions: {
         header: null
-      }
-    },
-    Order: {
-      screen: orderList,
-      navigationOptions: {
-        headerStyle: {
-          elevation: 0,
-          borderBottomColor: "transparent"
-        },
-        title: "ORDER"
       }
     },
     Transaction: {

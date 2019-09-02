@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  FlatList
+} from "react-native";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Card, Image, Text, Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { convertIDR } from "../../utils/helper";
 import {
@@ -11,13 +16,18 @@ import {
   changeStatus,
   postTransaction
 } from "../../redux/actions/transactions";
-import { redColor, textColor, primaryColor } from "../../api/constant";
+import { redColor, primaryColor } from "../../api/constant";
+import { timeUpdate } from "../../redux/actions/time";
 
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 class transactionList extends Component {
   state = {
-    total: 0
+    total: 0,
+    timer: setInterval(() => {
+      this.props.dispatch(timeUpdate());
+    }, 1000),
+    transactions: undefined
   };
   async componentDidMount() {
     const transactionId = await AsyncStorage.getItem("@transactionId");
@@ -29,6 +39,10 @@ class transactionList extends Component {
     setTimeout(() => {
       this.props.dispatch(changeStatus(data, transactionId));
     }, 5 * 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
   }
 
   handleCheckout = async () => {
@@ -44,7 +58,19 @@ class transactionList extends Component {
         serviceCharge: this.props.transactions.data.serviceCharge,
         tax: this.props.transactions.data.tax,
         totalPrice: this.props.transactions.data.totalPrice,
-        finishedTime: `${this.props.time.jam}:${this.props.time.menit}:${this.props.time.detik}`,
+        finishedTime: `${
+          this.props.time.jam < 10
+            ? `0${this.props.time.jam}`
+            : this.props.time.jam
+        }:${
+          this.props.time.menit < 10
+            ? `0${this.props.time.menit}`
+            : this.props.time.menit
+        }:${
+          this.props.time.detik < 10
+            ? `0${this.props.time.detik}`
+            : this.props.time.detik
+        }`,
         isPaid: false
       };
       const transactionId = await AsyncStorage.getItem("@transactionId");
@@ -57,47 +83,77 @@ class transactionList extends Component {
     }
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.transactions !== this.props.transactions) {
+      this.setState({
+        transactions: nextProps.transactions.data
+      });
+    }
+  }
+
   render() {
+    const time = this.props.time;
     if (this.props.transactions.data) {
       return (
         <View style={{ flex: 1 }}>
-          <ScrollView style={{ marginBottom: 45 }}>
-            {this.props.transactions.data.orders.map((order, index) => {
-              return (
-                <Card
-                  key={index}
-                  containerStyle={{ marginBottom: 15, marginTop: 0 }}
-                >
-                  <View style={{ flexDirection: "row" }}>
-                    <Image
-                      source={{
-                        uri: order.menuId.uri
-                      }}
-                      style={{ width: 100, height: 100 }}
-                    />
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={this.state.transactions.orders}
+            extraData={this.state}
+            keyExtractor={(item, index) => index.toString()}
+            ListFooterComponent={() => (
+              <View style={{ marginBottom: 245 }}></View>
+            )}
+            renderItem={({ item, index }) => (
+              <Card
+                key={index}
+                containerStyle={{ marginBottom: 15, marginTop: 0 }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <Image
+                    source={{
+                      uri: item.menuId.uri
+                    }}
+                    style={{ width: 100, height: 100 }}
+                  />
 
-                    <View style={{ marginLeft: 10 }}>
-                      <Text h1 h1Style={{ fontSize: 16 }} style={{ flex: 1 }}>
-                        {order.menuId.name}
+                  <View style={{ marginLeft: 10 }}>
+                    <Text h1 h1Style={{ fontSize: 16 }} style={{ flex: 1 }}>
+                      {item.menuId.name}
+                    </Text>
+                    <Text>Quantity: {item.qty}</Text>
+                    <Text>
+                      {`Harga Satuan: Rp ${convertIDR(item.menuId.price)}`}
+                    </Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text>Status: </Text>
+                      <Text style={item.status ? styles.sent : styles.waiting}>
+                        {item.status ? "SENT" : "WAITING"}
                       </Text>
-                      <Text>Quantity: {order.qty}</Text>
-                      <Text>
-                        {`Harga Satuan: Rp ${convertIDR(order.menuId.price)}`}
-                      </Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <Text>Status: </Text>
-                        <Text
-                          style={order.status ? styles.sent : styles.waiting}
-                        >
-                          {order.status ? "SENT" : "WAITING"}
-                        </Text>
-                      </View>
                     </View>
                   </View>
-                </Card>
-              );
-            })}
-            <View style={{ backgroundColor: "#e2e8ea", padding: 18 }}>
+                </View>
+              </Card>
+            )}
+          />
+
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              flex: 1,
+              width: width
+            }}
+          >
+            <View style={styles.ordersHeader}>
+              <Text style={styles.ordersTime}>
+                {time.jam < 10 ? `0${time.jam}` : time.jam}:
+                {time.menit < 10 ? `0${time.menit}` : time.menit}:
+                {time.detik < 10 ? `0${time.detik}` : time.detik}
+              </Text>
+              <Text style={styles.ordersTableNumber}>No. Meja: 21</Text>
+            </View>
+            <View style={{ padding: 10, backgroundColor: "#fff" }}>
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ marginBottom: 10, flex: 1 }}>Sub Total </Text>
                 <Text>
@@ -141,31 +197,17 @@ class transactionList extends Component {
                 </Text>
               </View>
             </View>
-          </ScrollView>
-          <View>
             <View
               style={{
-                position: "absolute",
-                bottom: 0,
-                paddingVertical: 2.5,
-                borderTopWidth: 1,
-                flex: 1,
-                width: width - 10,
-                borderColor: "#ecf0f1",
-                backgroundColor: "#ecf0f1",
                 flexDirection: "row",
                 alignItems: "center"
               }}
             >
-              <Text style={{ paddingHorizontal: 20 }}>
-                {this.props.time.jam}:{this.props.time.menit}:
-                {this.props.time.detik}
-              </Text>
               <Button
-                title="Order"
+                title="CALL BILL"
                 containerStyle={{ flex: 1 }}
                 style={{ borderRadius: 30 }}
-                buttonStyle={{ backgroundColor: primaryColor }}
+                buttonStyle={{ backgroundColor: primaryColor, borderRadius: 0 }}
                 onPress={() => this.handleCheckout()}
               />
             </View>
@@ -193,5 +235,14 @@ const styles = StyleSheet.create({
   },
   sent: {
     color: "#27ae60"
-  }
+  },
+  ordersHeader: {
+    backgroundColor: primaryColor,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  ordersTime: { paddingRight: 15, color: "#fff", flex: 1 },
+  ordersTableNumber: { color: "#fff", alignSelf: "flex-end" }
 });

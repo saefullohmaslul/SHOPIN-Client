@@ -1,5 +1,5 @@
 const initialState = {
-  data: undefined
+  data: []
 };
 
 const menus = (state = initialState, actions) => {

@@ -26,6 +26,12 @@ const time = (state = initialState, actions) => {
         ...state,
         detik: state.detik + actions.payload
       };
+    case "TIME_RESET":
+      return {
+        detik: actions.payload,
+        menit: actions.payload,
+        jam: actions.payload
+      };
     default:
       return state;
   }

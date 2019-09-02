@@ -3,8 +3,10 @@ import { View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Button, Text } from "react-native-elements";
 import { primaryColor, redColor } from "../../api/constant";
+import { resetTimer } from "../../redux/actions/time";
+import { connect } from "react-redux";
 
-export default class transactionCaseer extends Component {
+class transactionCaseer extends Component {
   state = {
     tableNumber: undefined
   };
@@ -15,6 +17,11 @@ export default class transactionCaseer extends Component {
       tableNumber
     });
   }
+
+  goHome = () => {
+    this.props.navigation.replace("HomeIndex");
+    this.props.resetTimer();
+  };
 
   render() {
     return (
@@ -41,7 +48,7 @@ export default class transactionCaseer extends Component {
         </View>
         <Button
           title={"Goto Home"}
-          onPress={() => this.props.navigation.replace("HomeIndex")}
+          onPress={this.goHome}
           buttonStyle={{ backgroundColor: primaryColor }}
           containerStyle={{ marginHorizontal: 20, marginTop: 20 }}
         />
@@ -49,3 +56,14 @@ export default class transactionCaseer extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    resetTimer: () => dispatch(resetTimer())
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(transactionCaseer);
