@@ -125,7 +125,7 @@ class Food extends Component {
           extraData={this.state}
           keyExtractor={item => item._id.toString()}
           ListFooterComponent={() => (
-            <View style={{ marginBottom: 185 }}></View>
+            <View style={{ marginBottom: 170 }}></View>
           )}
           renderItem={({ item }) => {
             return (
@@ -215,8 +215,7 @@ const styles = StyleSheet.create({
   },
   ordersTime: { paddingRight: 15, color: "#7f8c8d", flex: 1 },
   ordersTableNumber: { color: "#7f8c8d", alignSelf: "flex-end" },
-  ordersMenu: { marginHorizontal: 5 },
-  ordersMenuImage: { width: 80, height: 80, borderRadius: 50 },
+  ordersMenuImage: { width: 70, height: 70, borderRadius: 50 },
   ordersMenuQty: {
     position: "absolute",
     right: 5,
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     color: "#fff"
   },
-  ordersNull: { padding: 45 },
+  ordersNull: { padding: 40 },
   ordersButtonContainer: {
     flex: 1,
     width: width,
