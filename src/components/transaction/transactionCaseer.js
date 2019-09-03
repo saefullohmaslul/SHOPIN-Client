@@ -44,14 +44,16 @@ class transactionCaseer extends Component {
           >
             PLEASE BRING THE PHONE TO THE CASHIER TO PROCEED WITH THE PAYMENT
           </Text>
-          {this.state.transactionId ? (
-            <Barcode
-              value={this.state.transactionId}
-              format="CODE128"
-              width={2}
-              text={this.state.transactionId}
-            />
-          ) : null}
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            {this.state.transactionId ? (
+              <Barcode
+                value={this.state.transactionId}
+                format="CODE128"
+                width={1.1}
+                text={this.state.transactionId}
+              />
+            ) : null}
+          </View>
         </View>
         <Button
           title={"Back to Homepage"}

@@ -4,7 +4,8 @@ import {
   StyleSheet,
   StatusBar,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  KeyboardAvoidingView
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -34,7 +35,11 @@ export default class SplashTable extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={"padding"}
+        enabled
+        style={styles.container}
+      >
         <StatusBar backgroundColor={primaryColor} barStyle={"light-content"} />
         <View style={styles.iconContainer}>
           <View
@@ -58,7 +63,8 @@ export default class SplashTable extends Component {
               height: 10,
               fontSize: 14,
               color: textColor,
-              backgroundColor: "#fff"
+              backgroundColor: "#fff",
+              textAlign: "center"
             }}
             inputContainerStyle={{
               borderBottomWidth: 0.5,
@@ -78,10 +84,11 @@ export default class SplashTable extends Component {
               buttonStyle={{ backgroundColor: primaryColor }}
               containerStyle={{ marginHorizontal: 10 }}
               onPress={() => this.postTransaction(this.state.tableNumber)}
+              disabled={this.state.tableNumber ? false : true}
             />
           )}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 10
+    paddingHorizontal: 20
   },
   iconContainer: {
     flex: 1,
