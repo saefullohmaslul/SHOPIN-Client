@@ -1,25 +1,25 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, StatusBar, Image } from "react-native";
+import { View, StyleSheet, StatusBar, Image } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { primaryColor, textColor } from "../../api/constant";
-import Icons from "react-native-vector-icons/Ionicons";
 import { Input, Button } from "react-native-elements";
 import { postTableNumber } from "../../api/explore";
 
 export default class SplashTable extends Component {
   state = {
-    tableNumber: undefined
+    tableNumber: undefined,
+    validation: undefined
   };
   postTransaction = async tableNumber => {
-    const response = await postTableNumber(tableNumber);
-    const data = response.data;
     try {
+      const response = await postTableNumber(tableNumber);
+      const data = response.data;
       await AsyncStorage.setItem("@transactionId", data._id.toString());
       await AsyncStorage.setItem("@tableNumber", data.tableNumber.toString());
       this.props.navigation.navigate("Home");
     } catch (err) {
-      console.log(err);
+      alert("Something wrong, please try again...");
     }
   };
 

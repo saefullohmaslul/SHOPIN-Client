@@ -159,7 +159,7 @@ class transactionList extends Component {
                 <Text style={styles.orderTitle}>Sub Total </Text>
                 <Text>
                   {transactions.data.subTotal
-                    ? convertIDR(transactions.data.subTotal)
+                    ? convertIDR(parseInt(transactions.data.subTotal, 10))
                     : 0}
                 </Text>
               </View>
@@ -167,7 +167,7 @@ class transactionList extends Component {
                 <Text style={styles.orderTitle}>Discount</Text>
                 <Text>
                   {transactions.data.discount
-                    ? convertIDR(transactions.data.discount)
+                    ? convertIDR(parseInt(transactions.data.discount, 10))
                     : 0}
                 </Text>
               </View>
@@ -175,7 +175,7 @@ class transactionList extends Component {
                 <Text style={styles.orderTitle}>Service Charge</Text>
                 <Text>
                   {transactions.data.serviceCharge
-                    ? convertIDR(transactions.data.serviceCharge)
+                    ? convertIDR(parseInt(transactions.data.serviceCharge, 10))
                     : 0}
                 </Text>
               </View>
@@ -183,7 +183,7 @@ class transactionList extends Component {
                 <Text style={styles.orderTitle}>Tax</Text>
                 <Text>
                   {transactions.data.tax
-                    ? convertIDR(transactions.data.tax)
+                    ? convertIDR(parseInt(transactions.data.tax, 10))
                     : 0}
                 </Text>
               </View>
@@ -191,7 +191,7 @@ class transactionList extends Component {
                 <Text style={styles.orderTitle}>Total</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 17 }}>
                   {transactions.data.totalPrice
-                    ? convertIDR(transactions.data.totalPrice)
+                    ? convertIDR(parseInt(transactions.data.totalPrice, 10))
                     : 0}
                 </Text>
               </View>
