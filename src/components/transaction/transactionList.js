@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -209,7 +210,13 @@ class transactionList extends Component {
         </View>
       );
     } else {
-      return null;
+      return (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size={"large"} color={primaryColor} />
+        </View>
+      );
     }
   }
 }

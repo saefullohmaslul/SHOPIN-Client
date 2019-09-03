@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, StatusBar, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Image,
+  ActivityIndicator
+} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { primaryColor, textColor } from "../../api/constant";
@@ -9,9 +15,11 @@ import { postTableNumber } from "../../api/explore";
 export default class SplashTable extends Component {
   state = {
     tableNumber: undefined,
-    validation: undefined
+    validation: undefined,
+    isLoading: false
   };
   postTransaction = async tableNumber => {
+    this.setState({ isLoading: true });
     try {
       const response = await postTableNumber(tableNumber);
       const data = response.data;
@@ -19,6 +27,7 @@ export default class SplashTable extends Component {
       await AsyncStorage.setItem("@tableNumber", data.tableNumber.toString());
       this.props.navigation.navigate("Home");
     } catch (err) {
+      this.setState({ isLoading: false });
       alert("Something wrong, please try again...");
     }
   };
@@ -61,12 +70,16 @@ export default class SplashTable extends Component {
             keyboardType="number-pad"
             onChangeText={text => this.setState({ tableNumber: text })}
           />
-          <Button
-            title={"SUBMIT"}
-            buttonStyle={{ backgroundColor: primaryColor }}
-            containerStyle={{ marginHorizontal: 10 }}
-            onPress={() => this.postTransaction(this.state.tableNumber)}
-          />
+          {this.state.isLoading ? (
+            <ActivityIndicator size={"large"} color={primaryColor} />
+          ) : (
+            <Button
+              title={"SUBMIT"}
+              buttonStyle={{ backgroundColor: primaryColor }}
+              containerStyle={{ marginHorizontal: 10 }}
+              onPress={() => this.postTransaction(this.state.tableNumber)}
+            />
+          )}
         </View>
       </View>
     );

@@ -7,7 +7,8 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
+  ActivityIndicator
 } from "react-native";
 import { Text, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -180,7 +181,9 @@ class Drink extends Component {
                     />
                     <Text style={styles.ordersMenuQty}>{item.qty}</Text>
                   </TouchableOpacity>
-                ) : null
+                ) : (
+                  <ActivityIndicator size={"large"} color={primaryColor} />
+                )
               }
             />
           </View>
