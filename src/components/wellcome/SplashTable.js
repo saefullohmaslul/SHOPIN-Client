@@ -53,7 +53,7 @@ export default class SplashTable extends Component {
             />
           </View>
           <Input
-            placeholder={"Masukkan nomor meja"}
+            placeholder={"Please enter the table number"}
             inputStyle={{
               height: 10,
               fontSize: 14,

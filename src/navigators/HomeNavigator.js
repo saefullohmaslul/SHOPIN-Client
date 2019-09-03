@@ -29,7 +29,7 @@ const HomeNavigator = createStackNavigator(
           elevation: 0,
           borderBottomColor: "transparent"
         },
-        title: "GOTO CASEER"
+        title: "GOTO CASHIER"
       }
     }
   },
